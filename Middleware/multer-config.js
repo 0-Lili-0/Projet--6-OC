@@ -1,5 +1,6 @@
+// package multer gere les fichier entrant
 const multer = require("multer");
-// type d'image possible
+// creation objet pour le type d'image possible
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
@@ -20,4 +21,3 @@ const storage = multer.diskStorage({
 });
 
 module.exports = multer({storage: storage}).single('image');
-
