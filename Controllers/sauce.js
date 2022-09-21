@@ -14,7 +14,7 @@ exports.createSauce = (req, res, next) => {
         ...objectSauce,
         
         userId: req.body.userId,
-        imageUrl: `${req.protocol}://${req.get("host")}/Images/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
         likes: 0,
         dislikes: 0,
         usersLiked: [""],
@@ -35,11 +35,11 @@ exports.modifySauce = (req, res, next) => {
                 return;
             } else {
             // sinon il peut la modifier 
-           const filename = sauce.imageUrl.split("/Images/")[1]; //recup nom de fichier
-                fs.unlink(`Images/${filename}`); // suppresion image
+           const filename = sauce.imageUrl.split("/images/")[1]; //recup nom de fichier
+                fs.unlink(`images/${filename}`); // suppresion image
             const objectSauce = req.file ? { // verifie la presence d'un champs file
                 ...JSON.parse(req.body.sauce), //recup si oui et parse
-                imageUrl: `${req.protocol}://${req.get("host")}/Images/${req.file.filename}`, // creation url image a nouveau
+                imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`, // creation url image a nouveau
             } : { ...req.body }; // sinon recup objet dans la requete
             // on pousse les modif de la sauce
             Sauce.updateOne({_id: req.params.id}, {...objectSauce, _id: req.params.id}) //on modifie la sauce
@@ -86,61 +86,7 @@ exports.getAllSauce = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
 };
 
-// fonction like/dislike sauce
-/*exports.updateLikeDislikeSauce = (req, res, next) =>{
-    const like = req.body.likes; // like present dans le corps
-    const userId = req.body.userId; // user id de la requete
-    Sauce.findOne({_id: req.params.id})
-        .then((sauce) => {
-            switch(like) {
-                // on like une sauce
-                case 1:
-                    // on regarde si l'utilisateur a deja liker la sauce
-                    if (sauce.usersLiked.includes(req.userId)) {
-                        //si oui on indique action impossible
-                        res.status(400).json({ message: "Vous ne pouvez pas faire cela !"})
-                        return;
-                    }
-                    // si non en cas de like on pousse l'utilisateur id et on incremente de 1 
-                    Sauce.updateOne({_id: req.params.id}, {$push: {usersLiked: userId}, $inc: {likes: +1}})
-                        .then(() => res.status(200).json({ message: "Vous aimez cette sauce ! "}))
-                        .catch((error) => res.staus(400).json({ error }));
-                    break;
-                // on anuule un like ou dislike d'une sauce    
-                case 0:
-                    // on regarde si l'utilisateur à deja liker la sauce
-                    if (sauce.usersLiked.includes(req.userId)) {
-                        // si oui on retire l'utilisateur id du tableau et on incremente de -1
-                        Sauce.updateOne({_id: req.params.id}, {$pull: {usersLiked: userId}, $inc: { likes: -1}})
-                            .then(() => res.status(200).json({ message: "vous n'aimez plus cette sauce !"}))
-                            .catch((error) => res.staus(400).json({ error }));
-                    }
-                    // on regarde si un utilisateur à dejà disliker la sauce
-                    if (sauce.usersDisliked.includes(req.userId)) {
-                        // si oui on annule le dislike en retirant l'utilisateur id et on incremente de -1
-                        Sauce.updateOne({_id: req.params.id}, {$pull: {usersDisliked: userId}, $inc: { dislikes: -1}})
-                            .then(() => res.status(200).json({ message: "vous ne détestez plus cette sauce !"}))
-                            .catch((error) => res.staus(400).json({ error }));
-                        break;
-                    }
-                // dislike une sauce
-                case -1:
-                    //on regarde si l'utilisateur à déjà disliker une sauce
-                    if (sauce.usersDisliked.includes(req.userId)) {
-                        //si oui on indique action impossible
-                        res.status(400).json({ message: "Vous ne pouvez pas faire cela !"});
-                    return;
-                    }
-                    //si non on pousse l'utilisateur id dans le tableau et on incrémente de 1
-                    Sauce.updateOne({_id: req.params.id}, {$push: {usersDisliked: userId}, $inc: { dislikes: +1}})
-                        .then(() => res.status(200).json({ message: "vous détestez cette sauce !"}))
-                        .catch((error) => res.staus(400).json({ error }));
-                    break;   
-                default:
-                    console.log(error);
-            }
-        });
-};*/
+
 // fonction pour les like et dislike
 exports.updateLikeDislikeSauce = (req, res, next) => {
     

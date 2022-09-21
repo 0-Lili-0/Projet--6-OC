@@ -5,7 +5,7 @@ const router = express.Router();
 const auth = require('../Middleware/auth');
 const multer = require('../Middleware/multer-config');
 // on importe fichier controllers
-const sauceCtrl = require("../Controllers/route");
+const sauceCtrl = require("../Controllers/sauce");
 
 // route get pour voir une ou ttes les sauces
 router.get('/', auth, sauceCtrl.getAllSauce);

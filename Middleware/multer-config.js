@@ -10,7 +10,7 @@ const MIME_TYPES = {
 const storage = multer.diskStorage({
   // indique d'enregistrer dans le dossier Images
   destination: (req, file, callback) => {
-    callback(null, 'Images');
+    callback(null, 'images');
   },
   // indique utiliser nom origine avec les espaces remplacer par underscore et le moment precis de l'enregistrement
   filename: (req, file, callback) => {

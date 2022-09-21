@@ -33,7 +33,7 @@ app.use(express.json());
 //app.use(helmet());
 
 // charge les images depuis le dossiers et gere les ressources
-app.use('/Images', express.static(path.join(__dirname, 'Images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 // routes 
 app.use("/api/sauces", sauceRoutes);
 // route utilisateur
