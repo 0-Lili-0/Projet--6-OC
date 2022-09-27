@@ -1,8 +1,10 @@
 // import du model
 const User = require("../Models/User");
+
 // package necessaire pour mot de passe et token
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+// import dot env
 require('dotenv').config();
 
 // fonction pour creation user
