@@ -2,7 +2,8 @@ const express = require("express");
 // import package requis
 const mongoose = require("mongoose");
 const path = require('path');
-//const helmet = require("helmet")
+const helmet = require("helmet")
+
 
 // import route
 const userRoutes = require("./Routes/user");
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-   // res.setHeader('Cross-Origin-Ressource-Policy', 'same-site')
+    res.setHeader('Cross-Origin-Ressource-Policy', 'same-site')
     next();
 });
 
@@ -30,7 +31,9 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 // securiser les entête http
-//app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 
 // charge les images depuis le dossiers et gere les ressources
 app.use('/images', express.static(path.join(__dirname, 'images')));
